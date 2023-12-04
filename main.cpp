@@ -5,8 +5,7 @@
 #include "dayOne.h"
 
 int main() {
-    int dayOneRes = (new DayOne())->getResult();
-    std::cout << dayOneRes << std::endl;
+    // std::cout << (new DayOne())->getResult() << std::endl;
     return 0;
 }
 
