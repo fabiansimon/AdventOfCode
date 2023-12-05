@@ -36,9 +36,11 @@ with open(file_path, 'r') as file:
             for cube in cubes:
                 parse_cube(cube.strip())
 
-        if occs["blue"] <= goal["blue"] and occs["red"] <= goal["red"] and occs["green"] <= goal["green"]:
-            game_id = get_number(parts[0])
-            sum += int(game_id)
+        # if occs["blue"] <= goal["blue"] and occs["red"] <= goal["red"] and occs["green"] <= goal["green"]:
+        #     game_id = get_number(parts[0])
+        #     sum += int(game_id)
+
+        sum += occs["blue"] * occs["green"] * occs["red"]
 
         occs = {
             "blue": 0,
