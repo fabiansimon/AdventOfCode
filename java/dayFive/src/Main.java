@@ -56,8 +56,13 @@ public class Main {
 
         for (int i = 0; line != null; i++) {
             if (i == 0) {
-                for (String nr : line.split(":")[1].trim().split(" ")) {
-                    seeds.add(Long.parseLong(nr));
+                String[] nrs = line.split(":")[1].trim().split(" ");
+                for (int j = 0; j < nrs.length; j+=2) {
+                    long start = Long.parseLong(nrs[j]);
+                    long range = Long.parseLong(nrs[j+1]);
+                    for (int k = 0; k < range; k++) {
+                        seeds.add(start + k);
+                    }
                 }
                 continue;
             }
