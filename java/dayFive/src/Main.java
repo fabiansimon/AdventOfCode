@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSParserFilter;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,39 +11,45 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String filePath = "./dayFive_input.txt";
 
-        List<Integer> seeds = new ArrayList<>();
+        List<Long> seeds = new ArrayList<>();
         List<ListNode> nodes = new ArrayList<>();
 
         addInputData(seeds, nodes, filePath);
 
-        System.out.println(seeds);
         for (ListNode node : nodes) {
-
             seeds = mapSeeds(seeds, node.mapValues);
-
-            System.out.println("");
-            break;
         }
 
+        long res = Long.MAX_VALUE;
+        for (long seed : seeds) {
+            res = Math.min(res, seed);
+        }
+
+        System.out.println(res);
     }
 
-    private static List<Integer> mapSeeds(List<Integer> seeds, List<MapValue> mapValues) {
-        List<Integer> newSeeds = new ArrayList<>();
+    private static List<Long> mapSeeds(List<Long> seeds, List<MapValue> mapValues) {
+        List<Long> newSeeds = new ArrayList<>();
 
-        for (MapValue value : mapValues) {
-            int[] range = new int[value.rangeLength];
-            for (int i = 0; i < range.length; i++) {
-                range
+        for (int i = 0; i < seeds.size(); i++) {
+            long seed = seeds.get(i);
+            for (MapValue value : mapValues) {
+                long min = value.srcRange;
+                long max = min + value.rangeLength;
+                if (seed >= min && seed < max) {
+                    newSeeds.add(value.destRange + (seed - min));
+                    break;
+                }
+            }
+
+            if (newSeeds.size()-1 < i) {
+                newSeeds.add(seed);
             }
         }
 
-        for (int seed : seeds) {
-            System.out.println(seed);
-        }
-
-        return seeds;
+        return newSeeds;
     }
-    private static void addInputData(List<Integer> seeds, List<ListNode> nodes, String path) throws IOException {
+    private static void addInputData(List<Long> seeds, List<ListNode> nodes, String path) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = br.readLine();
 
@@ -49,7 +57,7 @@ public class Main {
         for (int i = 0; line != null; i++) {
             if (i == 0) {
                 for (String nr : line.split(":")[1].trim().split(" ")) {
-                    seeds.add(Integer.valueOf(nr));
+                    seeds.add(Long.parseLong(nr));
                 }
                 continue;
             }
@@ -94,14 +102,14 @@ class ListNode {
 }
 
 class MapValue {
-    int destRange;
-    int srcRange;
-    int rangeLength;
+    long destRange;
+    long srcRange;
+    long rangeLength;
 
     public MapValue(String s) {
         String[] data = s.split( " ");
-        this.destRange = Integer.parseInt(data[0]);
-        this.srcRange = Integer.parseInt(data[1]);;
-        this.rangeLength = Integer.parseInt(data[2]);
+        this.destRange = Long.parseLong(data[0]);
+        this.srcRange = Long.parseLong(data[1]);;
+        this.rangeLength = Long.parseLong(data[2]);
     }
 }
