@@ -53,10 +53,8 @@ fn main () -> io::Result<()> {
     let mut total_winnings = 0; 
     let mut rank = 1;
     while let Some(hand) = sorted_hands.pop() {
-        total_winnings += &hand.bid * rank;
+        total_winnings += hand.bid * rank;
         rank += 1;
-
-        // println!("{:?}", hand);
     }
 
     println!("Total Winnings: {}", total_winnings);
@@ -123,7 +121,7 @@ fn get_strength (input: &str) -> i32 {
             };
         }
 
-        return 1
+        return 0
     }
 
     return 0;
