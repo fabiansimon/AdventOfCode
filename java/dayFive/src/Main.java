@@ -3,9 +3,7 @@ import org.w3c.dom.ls.LSParserFilter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -14,8 +12,27 @@ public class Main {
         List<Long> seeds = new ArrayList<>();
         List<ListNode> nodes = new ArrayList<>();
 
+        Long res = Long.MAX_VALUE;
+
         addInputData(seeds, nodes, filePath);
 
+        for (int i = 0; i < seeds.size(); i+=2) {
+            System.out.println("working... " + i + " / " + seeds.size());
+            long start = seeds.get(i);
+            long range = seeds.get(i+1);
+
+            for (int j = 0; j < range; j++) {
+                long curr = start + j;
+
+                for (ListNode node : nodes) {
+                    curr = mapSeed(curr, node.mapValues);
+                }
+
+                res = Math.min(res, curr);
+            }
+        }
+
+        /*
         for (ListNode node : nodes) {
             seeds = mapSeeds(seeds, node.mapValues);
         }
@@ -25,7 +42,20 @@ public class Main {
             res = Math.min(res, seed);
         }
 
+        */
         System.out.println(res);
+    }
+
+    private static Long mapSeed(Long seed, List<MapValue> mapValues) {
+        for (MapValue value : mapValues) {
+            long min = value.srcRange;
+            long max = min + value.rangeLength;
+            if (seed >= min && seed < max) {
+                return value.destRange + (seed - min);
+            }
+        }
+
+        return seed;
     }
 
     private static List<Long> mapSeeds(List<Long> seeds, List<MapValue> mapValues) {
@@ -57,13 +87,7 @@ public class Main {
         for (int i = 0; line != null; i++) {
             if (i == 0) {
                 String[] nrs = line.split(":")[1].trim().split(" ");
-                for (int j = 0; j < nrs.length; j+=2) {
-                    long start = Long.parseLong(nrs[j]);
-                    long range = Long.parseLong(nrs[j+1]);
-                    for (int k = 0; k < range; k++) {
-                        seeds.add(start + k);
-                    }
-                }
+                for (String nr : nrs) seeds.add(Long.parseLong(nr));
                 continue;
             }
 
