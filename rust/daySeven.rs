@@ -13,7 +13,8 @@ struct Hand {
 
 impl Ord for Hand {
     fn cmp(&self, other: &Self) -> Ordering {
-        let labels: Vec<char> = "AKQJT98765432".chars().collect();
+        // let labels: Vec<char> = "AKQJT98765432".chars().collect(); --> PART I 
+        let labels: Vec<char> = "AKQT98765432J".chars().collect(); // --> PART II
         let mut card_order: HashMap<char, usize> = HashMap::new();
 
         for (index, &label) in labels.iter().enumerate() {
@@ -42,24 +43,6 @@ impl PartialOrd for Hand {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
-}
-
-fn main () -> io::Result<()> {
-    let file_path = "./daySeven_input.txt";
-    
-    let mut sorted_hands: BinaryHeap<Hand> = BinaryHeap::new();
-    let _ = populate_hands(file_path, &mut sorted_hands);
-
-    let mut total_winnings = 0; 
-    let mut rank = 1;
-    while let Some(hand) = sorted_hands.pop() {
-        total_winnings += hand.bid * rank;
-        rank += 1;
-    }
-
-    println!("Total Winnings: {}", total_winnings);
-
-    Ok(())
 }
 
 fn populate_hands (path: &str, list: &mut BinaryHeap<Hand>) -> io::Result<()> {
@@ -98,31 +81,58 @@ fn get_strength (input: &str) -> i32 {
         .map(|(key, value)| (*value, *key))
         .collect();
 
+    let mut jokers = 0;
+    if let Some(&value) = occs.get(&'J') {
+        jokers = value;
+    };
+
     while let Some((val, _key)) = max_scores.pop() {
+        // Five of a Kind
+        if val + jokers >= 5 {
+            return 6;
+        }
 
-        // Five of a Kind or Four of a Kind 
-        if val == 5 || val == 4 {
-            return val+1; 
-        };
+        // Four of a Kind
+        if val + jokers == 4 {
+            return 5;
+        }
 
-        // Three of a Kind or Full House
-        if val == 3 {
+        // Three of a Kind
+        if val + jokers == 3 {
             return match max_scores.peek().map(|(p_val, _)| p_val) {
-                Some(2) => 4,
+                Some(2) => 4, // Full House
                 _ => 3,
             };
         }
 
-        // Two Pair or One Pair
-        if val == 2 {
+        // Two Pair
+        if val + jokers == 2 {
             return match max_scores.peek().map(|(p_val, _)| p_val) {
                 Some(2) => 2,
                 _ => 1,
             };
         }
 
-        return 0
+        return 0;
     }
 
     return 0;
+}
+
+fn main () -> io::Result<()> {
+    let file_path = "./daySeven_input.txt";
+    
+    let mut sorted_hands: BinaryHeap<Hand> = BinaryHeap::new();
+    let _ = populate_hands(file_path, &mut sorted_hands);
+
+    let mut total_winnings = 0; 
+    let mut rank = 1;
+    while let Some(hand) = sorted_hands.pop() {
+        total_winnings += hand.bid * rank;
+        rank += 1;
+    }
+
+    println!("Total Winnings: {}", total_winnings);
+
+    Ok(())
 }
