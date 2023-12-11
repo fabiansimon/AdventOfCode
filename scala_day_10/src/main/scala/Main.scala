@@ -6,13 +6,20 @@ object Main extends App {
 
   val lines = getLines(filePath)
   val start = findStart(lines)
+  var lineArr = lines.map(_.toCharArray).toArray
   
-  var max = findMax(lines, start)
+  var max = findMax(lineArr, start)
+
+  printMatrix(lineArr)
 
   println(max)
 }
 
-def findMax(lines: List[String], start: Array[Int]): Int = {
+def printMatrix(lines: Array[Array[Char]]) = {
+  lines.foreach(row => println(row.mkString(" ")))
+}
+
+def findMax(lines: Array[Array[Char]], start: Array[Int]): Int = {
     // x - y
   val pipes = HashMap(
     'F' -> Array('R', 'B'),
@@ -25,8 +32,6 @@ def findMax(lines: List[String], start: Array[Int]): Int = {
                  
   val width = lines(0).length
   val height = lines.length
-
-  val lineArr = lines.map(_.toCharArray).toArray
 
   var moves = -1
   val directions = Array((0, -1, 'B'),(1, 0, 'L'),(0, 1, 'T'),(-1, 0, 'R'))
@@ -51,16 +56,17 @@ def findMax(lines: List[String], start: Array[Int]): Int = {
 
         if (newX >= 0 && newX < width &&
             newY >= 0 && newY < height &&
-            pipes.contains(lineArr(newY)(newX))
+            pipes.contains(lines(newY)(newX))
             ) {
-              var pipe = pipes(lineArr(newY)(newX))
+              var pipe = pipes(lines(newY)(newX))
               if (dir == pipe(0) || dir == pipe(1)) {
                 queue.enqueue(Array(newX, newY))
               }
             }
         }
 
-      lineArr(curr(1))(curr(0)) = '.'
+      // lineArr(curr(1))(curr(0)) = '.' PART I 
+      lines(curr(1))(curr(0)) = 'V' // PART II 
     }
   }
 
