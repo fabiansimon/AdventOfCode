@@ -4,46 +4,64 @@ import scala.collection.mutable.{HashMap, Queue}
 object Main extends App {
   var filePath = "./day10_input.txt"
 
-  // x - y
-  val directions = new HashMap[Char, Array[Int]]
-  directions += ( 'F' -> Array(1, 1), 
-                  'J' -> Array(-1, -1),  
-                  'L' -> Array(1, -1), 
-                  '7' -> Array(-1, 1),
-                  )
-
   val lines = getLines(filePath)
   val start = findStart(lines)
   
   var max = findMax(lines, start)
+
   println(max)
 }
 
-/*
-..F7.
-.FJ|.
-SJ.L7
-|F--J
-LJ...
-
-7-F7-
-.FJ|7
-SJLL7
-|F--J
-LJ.LJ
-
-*/ 
-
 def findMax(lines: List[String], start: Array[Int]): Int = {
-  var moves = 0
+    // x - y
+  val pipes = HashMap(
+    'F' -> Array('R', 'B'),
+    'J' -> Array('L', 'T'),
+    'L' -> Array('T', 'R'),
+    '7' -> Array('L', 'B'),
+    '|' -> Array('T', 'B'),
+    '-' -> Array('L', 'R'),
+  )
+                 
+  val width = lines(0).length
+  val height = lines.length
+
+  val lineArr = lines.map(_.toCharArray).toArray
+
+  var moves = -1
+  val directions = Array((0, -1, 'B'),(1, 0, 'L'),(0, 1, 'T'),(-1, 0, 'R'))
 
   var queue = Queue.empty[Array[Int]]
   queue.enqueue(start)
 
+  var size = 0
+  var curr = Array[Int](2)
+
   while (!queue.isEmpty) {
     moves += 1
-    queue.dequeue()
-    
+    size = queue.size
+
+    for (_ <- 0 until size) {
+      curr = queue.dequeue()
+
+      for (direction <- directions) {
+        var dir = direction(2)
+        var newX = curr(0) + direction(0)
+        var newY = curr(1) + direction(1)
+
+        if (newX >= 0 && newX < width &&
+            newY >= 0 && newY < height &&
+            pipes.contains(lineArr(newY)(newX))
+            ) {
+              var pipe = pipes(lineArr(newY)(newX))
+              if (dir == pipe(0) || dir == pipe(1)) {
+                queue.enqueue(Array(newX, newY))
+              }
+            }
+        }
+
+      lineArr(curr(1))(curr(0)) = '.'
+    }
   }
 
   return moves
@@ -54,8 +72,8 @@ def findStart(lines: List[String]): Array[Int] = {
   for (i <- 0 until lines.length) {
     for (j <- 0 until lines(0).length) {
       if (lines(i)(j) == 'S') {
-        start(0) = i;
-        start(1) = j;
+        start(0) = j;
+        start(1) = i;
       }
     }
   }
