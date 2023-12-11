@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 void predict_next_value(char* line, int* prediction) {
@@ -35,7 +36,7 @@ void predict_next_value(char* line, int* prediction) {
         count--;
         int all_zeros = 1;
         for (int i = 0; i < count; i++) {
-            int diff = abs(start_array[i+1] - start_array[i]);
+            int diff = start_array[i + 1] - start_array[i];
 
             if (diff != 0) all_zeros = 0;
             start_array[i] = diff;
@@ -52,12 +53,12 @@ void predict_next_value(char* line, int* prediction) {
     for (int i = 0; i < res_count; i++) {
         *prediction += res_array[i];
     }
-
+    free(res_array);
 }
 
 int main() {
     FILE  *file;
-    char buffer[100];
+    char buffer[200];
 
     file = fopen("../day9_input.txt", "r");
 
