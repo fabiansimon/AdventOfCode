@@ -31,6 +31,7 @@ void predict_next_value(char* line, int* prediction) {
 
     int* res_array = (int*) malloc(count * sizeof(int));
     int res_count = 0;
+    res_array[res_count++] = start_array[0];
 
     for (;;) {
         count--;
@@ -41,8 +42,10 @@ void predict_next_value(char* line, int* prediction) {
             if (diff != 0) all_zeros = 0;
             start_array[i] = diff;
 
-            if (i == count-1) {
-                res_array[res_count++] = start_array[i+1];
+            // if (i == count-1) { Part I
+            if (i == 0) { // Part II
+                //res_array[res_count++] = start_array[i+1]; PART I
+                res_array[res_count++] = start_array[i]; // PART II
             }
         }
 
@@ -50,10 +53,27 @@ void predict_next_value(char* line, int* prediction) {
     }
 
     free(start_array);
+    /* PART I
+    */
     for (int i = 0; i < res_count; i++) {
-        *prediction += res_array[i];
+        printf("%d ", res_array[i]);
+        // *prediction += res_array[i];
     }
+
+    // PART II
+    for (int i = res_count-1; i >= 1; i--) {
+        if (i == 1) {
+            *prediction = res_array[i-1] - *prediction;
+            break;
+        }
+
+         printf("%d %d\n", *prediction, res_array[i-1]);
+        *prediction += res_array[i-1];
+    }
+
+    printf("%d ", *prediction);
     free(res_array);
+
 }
 
 int main() {
@@ -72,9 +92,10 @@ int main() {
         int prediction = 0;
         predict_next_value(buffer, &prediction);
         total_pred += prediction;
+        break;
     }
 
-    printf("%d", total_pred);
+    printf("\n%d", total_pred);
     fclose(file);
 
     return 0;
