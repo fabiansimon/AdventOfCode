@@ -54,26 +54,18 @@ void predict_next_value(char* line, int* prediction) {
 
     free(start_array);
     /* PART I
-    */
     for (int i = 0; i < res_count; i++) {
         printf("%d ", res_array[i]);
         // *prediction += res_array[i];
     }
+    */
 
     // PART II
-    for (int i = res_count-1; i >= 1; i--) {
-        if (i == 1) {
-            *prediction = res_array[i-1] - *prediction;
-            break;
-        }
-
-         printf("%d %d\n", *prediction, res_array[i-1]);
-        *prediction += res_array[i-1];
+    for (int i = res_count-2; i >= 0; i--) {
+        *prediction = res_array[i] - *prediction;
     }
 
-    printf("%d ", *prediction);
     free(res_array);
-
 }
 
 int main() {
@@ -92,7 +84,6 @@ int main() {
         int prediction = 0;
         predict_next_value(buffer, &prediction);
         total_pred += prediction;
-        break;
     }
 
     printf("\n%d", total_pred);
