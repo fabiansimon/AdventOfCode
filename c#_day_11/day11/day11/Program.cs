@@ -1,6 +1,7 @@
 ﻿
 string filePath = "../../../day11_input.txt";
 
+HashSet<int> verticalExpansion = new HashSet<int>();
 List<List<char>> input = getFileInput(filePath);
 
 // Console.WriteLine(input[0].Count); // width
@@ -9,9 +10,10 @@ List<List<char>> input = getFileInput(filePath);
 List<int[]> coordinates = getCoordinates(input);
 
 HashSet<(char, char)> usedPairs = new HashSet<(char, char)>();
+
 int distance = 0, count = 0;
 
-// printArr(input);
+printArr(input);
 
 foreach (int[] origin in coordinates)
 {
@@ -29,7 +31,8 @@ foreach (int[] origin in coordinates)
             distance += getDistance(origin, target);
             usedPairs.Add((o, t));
 
-        }
+            //Console.WriteLine(distance);
+        }   
     }
 }
 
@@ -42,9 +45,58 @@ Console.WriteLine("distance: " + distance);
  * v
  */
 
-static int getDistance(int[] origin, int[] target)
+int getDistance(int[] origin, int[] target) 
 {
-    return Math.Abs(origin[0] - target[0]) + Math.Abs(origin[1] - target[1]);
+    int distance = 0;
+    int multiplier = 0;
+    int[] start = origin.ToArray();
+
+    HashSet<int> horVisited = new HashSet<int>();
+    HashSet<int> verVisited = new HashSet<int>();
+
+    while (start[0] != target[0] || start[1] != target[1])
+    {
+        // Console.WriteLine("[" + start[0] + ", " + start[1] + "]");
+
+        if (input[start[0]][start[1]] == '%')
+        {
+            if (verVisited.Contains(start[1]) && horVisited.Contains(start[0])) {
+                multiplier--;
+            } else
+            {
+                if (verticalExpansion.Contains(start[1]))
+                {
+
+                    if (!verVisited.Contains(start[1]))
+                    {
+                        verVisited.Add(start[1]);
+                        multiplier++;
+                    }
+
+                } else
+                {
+                    if (!horVisited.Contains(start[0]))
+                    {
+                        horVisited.Add(start[0]);
+                        multiplier++;
+                    }
+                    
+                }
+            }
+            
+        }
+
+        distance++;
+        
+        int move = Math.Sign(target[0] - start[0]);
+        start[0] += move;
+        start[1] += (move == 0) ? Math.Sign(target[1] - start[1]) : 0;
+    }
+
+    distance += (multiplier * 10) - multiplier;
+
+    return distance; 
+    // return Math.Abs(origin[0] - target[0]) + Math.Abs(origin[1] - target[1]); 
 }
 
 static List<int[]> getCoordinates(List<List<char>> matrix)
@@ -56,8 +108,8 @@ static List<int[]> getCoordinates(List<List<char>> matrix)
 
         for (int j = 0; j < matrix[0].Count; j++)
         {
-
-            if (matrix[i][j] != '.') coords.Add(new int[] { i, j });
+            char c = matrix[i][j];
+            if (c != '.' && c != '%') coords.Add(new int[] { i, j });
 
         }
 
@@ -81,7 +133,7 @@ static void printArr(List<List<char>> data)
 }
 
 
-static List<List<char>> getFileInput(string path)
+List<List<char>> getFileInput(string path)
 {
     List<List<char>> inputArr = new List<List<char>>();
     int[] occ = null;
@@ -123,7 +175,7 @@ static List<List<char>> getFileInput(string path)
 
                 if (isEmpty)
                 {
-                    inputArr.Add(Enumerable.Repeat('.', line.Length).ToList());
+                    inputArr.Add(Enumerable.Repeat('%', line.Length).ToList());
                 }
 
             }
@@ -146,7 +198,8 @@ static List<List<char>> getFileInput(string path)
 
             for (int j = 0; j < inputArr.Count; j++)
             {
-                inputArr[j].Insert(i+offset, '.');
+                inputArr[j].Insert(i+offset, '%');
+                verticalExpansion.Add(i);
             }
 
             offset++;
