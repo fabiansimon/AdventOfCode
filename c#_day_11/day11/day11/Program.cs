@@ -8,32 +8,32 @@ List<List<char>> input = getFileInput(filePath);
 
 List<int[]> coordinates = getCoordinates(input);
 
-HashSet<char[]> usedPairs = new HashSet<char[]>();
+HashSet<(char, char)> usedPairs = new HashSet<(char, char)>();
 int distance = 0, count = 0;
 
 // printArr(input);
 
 foreach (int[] origin in coordinates)
 {
-    Console.WriteLine(count++);
 
     foreach (int[] target in coordinates)
     {
+        if (target.SequenceEqual(origin)) continue;
+
         char o = input[origin[0]][origin[1]];
         char t = input[target[0]][target[1]];
 
-        if (!usedPairs.Any(pair => pair.SequenceEqual(new char[] { o, t })) &&
-            !usedPairs.Any(pair => pair.SequenceEqual(new char[] { t, o })) &&
-            !target.SequenceEqual(origin))
+        if (!usedPairs.Contains((o, t)) &&
+            !usedPairs.Contains((t, o)))
         {
             distance += getDistance(origin, target);
-            usedPairs.Add(new char[] { o, t });
+            usedPairs.Add((o, t));
 
         }
     }
 }
 
-Console.WriteLine(distance);
+Console.WriteLine("distance: " + distance);
 
 
 /*
