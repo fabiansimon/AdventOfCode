@@ -35,12 +35,25 @@ void populateData(Iterable<String> lines, List<String> directions,
   }
 }
 
-bool allArrived(List<String> curr) {
-  for (String point in curr) {
-    if (!point.endsWith("Z")) return false;
+int gcd(int a, int b) {
+  while (b != 0) {
+    final int temp = b;
+    b = a % b;
+    a = temp;
   }
+  return a.abs();
+}
 
-  return true;
+int lcm(int a, int b) {
+  return (a * b ~/ gcd(a, b)).abs();
+}
+
+int findLCM(List<int> numbers) {
+  int result = 1;
+  for (int num in numbers) {
+    result = lcm(result, num);
+  }
+  return result;
 }
 
 void main() {
@@ -54,25 +67,29 @@ void main() {
 
   populateData(lines, directions, map, curr);
 
-  int moves = 0;
+  List<int> movesEach = [];
 
-  while (!allArrived(curr)) {
-    int directionIdx = directions[moves % directions.length] == "L" ? 0 : 1;
-    for (var i = 0; i < curr.length; i++) {
+  int moves = 0;
+  for (var i = 0; i < curr.length; i++) {
+    moves = 0;
+    while (!curr[i].endsWith("Z")) {
+      int directionIdx = directions[moves++ % directions.length] == "L" ? 0 : 1;
       curr[i] = map[curr[i]]![directionIdx];
     }
-    moves++;
+
+    movesEach.add(moves);
   }
 
-  /* PART I
-  String curr = "AAA";
+  moves = findLCM(movesEach);
 
-  while (curr != "ZZZ") {
-    int directionIdx = directions[moves % directions.length] == "L" ? 0 : 1;
-    curr = map[curr]![directionIdx];
-    moves++;
-  }
-  */
+  // /* PART I
+  // String c = "AAA";
+
+  // while (c != "ZZZ") {
+  //   int directionIdx = directions[moves % directions.length] == "L" ? 0 : 1;
+  //   c = map[c]![directionIdx];
+  //   moves++;
+  // }
 
   print(moves);
 }
