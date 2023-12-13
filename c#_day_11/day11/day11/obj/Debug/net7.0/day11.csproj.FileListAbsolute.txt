@@ -28,3 +28,7 @@
 /Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/obj/Debug/net7.0/day11.pdb
 /Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/obj/Debug/net7.0/day11.genruntimeconfig.cache
 /Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/obj/Debug/net7.0/ref/day11.dll
+/Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/bin/Debug/net7.0/Newtonsoft.Json.dll
+/Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/bin/Debug/net7.0/ConfigParser.dll
+/Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/bin/Debug/net7.0/WakaTime.dll
+/Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/obj/Debug/net7.0/day11.csproj.CopyComplete

@@ -7,8 +7,43 @@
   "targets": {
     ".NETCoreApp,Version=v7.0": {
       "day11/1.0.0": {
+        "dependencies": {
+          "WakaTime": "8.1.11"
+        },
         "runtime": {
           "day11.dll": {}
+        }
+      },
+      "Microsoft.CSharp/4.5.0": {},
+      "Newtonsoft.Json/12.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.2.23222"
+          }
+        }
+      },
+      "Salaros.ConfigParser/0.3.2": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/ConfigParser.dll": {
+            "assemblyVersion": "0.3.2.8",
+            "fileVersion": "0.3.2.8"
+          }
+        }
+      },
+      "WakaTime/8.1.11": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "Salaros.ConfigParser": "0.3.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/WakaTime.dll": {
+            "assemblyVersion": "8.1.11.2",
+            "fileVersion": "8.1.11.2"
+          }
         }
       }
     }
@@ -18,6 +53,34 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.CSharp/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
+      "path": "microsoft.csharp/4.5.0",
+      "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
+      "path": "newtonsoft.json/12.0.2",
+      "hashPath": "newtonsoft.json.12.0.2.nupkg.sha512"
+    },
+    "Salaros.ConfigParser/0.3.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-50XCtLlCTzW0SV2yFQmrikeLJ1EjRjNAcaHOQI6bIMbO2jALjgf1y+1vBsldWhJ3lPqPVV+s+q+ox3wzKh+OHQ==",
+      "path": "salaros.configparser/0.3.2",
+      "hashPath": "salaros.configparser.0.3.2.nupkg.sha512"
+    },
+    "WakaTime/8.1.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fk+AxpNp+ViyS+4pNdXzS8RSdrSl1WkY/+dbzbU+bxQXTfr2eyARHCT2gx/Iy9w+8pN4+VAAqka+CoA8zjYh2A==",
+      "path": "wakatime/8.1.11",
+      "hashPath": "wakatime.8.1.11.nupkg.sha512"
     }
   }
 }

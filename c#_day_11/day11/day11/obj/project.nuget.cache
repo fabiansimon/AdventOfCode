@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "UKFiIi/jkb1Z11erH4IdrUwbSRvsyn1wHI3S1e5Hc/hOjbzMzlYq3pbyo18cCc5nOitGrmHbHm4hOE6p373wSg==",
+  "dgSpecHash": "BrznPebZBKt5NZg+sWyhMP7W7v66lufiHInXiag08nCnR4kuO7JPo4xxy/tLXRo21NzsLCPMyhFPtYpGcMbAbg==",
   "success": true,
   "projectFilePath": "/Users/fabiansimon/Developer/AdventOfCode/c#_day_11/day11/day11/day11.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/fabiansimon/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
+    "/Users/fabiansimon/.nuget/packages/newtonsoft.json/12.0.2/newtonsoft.json.12.0.2.nupkg.sha512",
+    "/Users/fabiansimon/.nuget/packages/salaros.configparser/0.3.2/salaros.configparser.0.3.2.nupkg.sha512",
+    "/Users/fabiansimon/.nuget/packages/wakatime/8.1.11/wakatime.8.1.11.nupkg.sha512"
+  ],
   "logs": []
 }
