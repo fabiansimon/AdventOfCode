@@ -13,7 +13,7 @@ struct Hand {
 
 impl Ord for Hand {
     fn cmp(&self, other: &Self) -> Ordering {
-        // let labels: Vec<char> = "AKQJT98765432".chars().collect(); --> PART I 
+        // let labels: Vec<char> = "AKQJT98765432".chars().collect(); // --> PART I 
         let labels: Vec<char> = "AKQT98765432J".chars().collect(); // --> PART II
         let mut card_order: HashMap<char, usize> = HashMap::new();
 
@@ -71,7 +71,13 @@ fn populate_hands (path: &str, list: &mut BinaryHeap<Hand>) -> io::Result<()> {
 fn get_strength (input: &str) -> i32 {
     let mut occs: HashMap<char, i32> = HashMap::new();
 
+    let mut jokers = 0;
     for c in input.chars() {
+        if c == 'J' {
+            jokers += 1;
+            continue;
+        }
+
         let val = *occs.entry(c).or_insert(0) + 1;
         occs.insert(c, val);
     }
@@ -81,10 +87,10 @@ fn get_strength (input: &str) -> i32 {
         .map(|(key, value)| (*value, *key))
         .collect();
 
-    let mut jokers = 0;
-    if let Some(&value) = occs.get(&'J') {
-        jokers = value;
-    };
+    if max_scores.is_empty() { // EDGE CASE IF ALL J's
+        return 6;
+    }
+
 
     while let Some((val, _key)) = max_scores.pop() {
         // Five of a Kind
