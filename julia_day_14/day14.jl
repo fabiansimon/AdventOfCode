@@ -36,10 +36,60 @@ function get_total_weight(lines)
     return total
 end
 
+function format_matrix(lines)
+    border = length(lines[1])
+
+    for (row, line) in enumerate(lines)
+        index = border
+
+        for (i, c) in enumerate(line)
+            if c == 'O'
+                if i != border - index + 1
+                    # Swap 'O' and '.'
+                    line[border - index + 1], line[i] = 'O', '.'
+                end
+
+                index -= 1
+            end
+
+            if c == '#'
+                index = border - i
+            end
+        end
+    end
+end
+
+function turn_matrix(lines)
+    turned = []
+    for line in lines
+        for (index, c) in enumerate(collect(line))
+            while length(turned) < index
+                push!(turned, [])
+            end
+            push!(turned[index], c)
+        end
+    end
+    return turned
+end
+
+function print_matrix(lines)
+    for (i, line) in enumerate(lines)
+        for (j, _) in enumerate(line)
+            print(lines[j][i])
+        end
+        println()
+    end
+    println()
+end
+
 
 path = "./day14_input.txt"
 lines = get_lines(path)
-total_weight = get_total_weight(lines)
+# total_weight = get_total_weight(lines)
+print_matrix(lines)
 
-println(total_weight)
+format_matrix(lines)
 
+print_matrix(lines)
+
+turned = turn_matrix(lines)
