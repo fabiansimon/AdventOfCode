@@ -86,10 +86,15 @@ end
 path = "./day14_input.txt"
 lines = get_lines(path)
 # total_weight = get_total_weight(lines)
-print_matrix(lines)
+println(lines)
+println()
 
 format_matrix(lines)
-
-print_matrix(lines)
-
 turned = turn_matrix(lines)
+
+# println(lines)
+println(turned)
+println()
+format_matrix(turned)
+println(turned)
+println()
