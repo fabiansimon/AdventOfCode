@@ -18,10 +18,10 @@ Haskell		[ ]
 F# 		[x]
 Lisp		[ ]
 Closure		[ ]
-Lua 		[ ]
+Lua 		[x]
 D		[ ]
 Object-C 	[x]
 Julia 		[x]
-Swift 		[ ]
+Swift 		[x]
 R
 
