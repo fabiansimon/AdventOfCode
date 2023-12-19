@@ -1,4 +1,28 @@
 ﻿<Properties StartupConfiguration="{71DD8CFD-0ABF-4271-B995-6941D7B202EF}|Default">
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.day15 FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.day15 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="day15/Program.fs">
+    <Files>
+      <File FileName="day15/Program.fs" Line="98" Column="41" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="day15" expanded="True">
+            <Node name="NuGet.Config files" expanded="True" />
+            <Node name="day15" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="FrameworkReferences" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
