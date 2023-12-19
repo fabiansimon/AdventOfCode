@@ -1,3 +1,6 @@
 {
-    "julia.environmentPath": "/Users/fabiansimon/Developer/AdventOfCode"
+    "julia.environmentPath": "/Users/fabiansimon/Developer/AdventOfCode",
+    "Lua.diagnostics.globals": [
+        "newQueue"
+    ]
 }
