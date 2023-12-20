@@ -53,32 +53,45 @@ function printMatrix(matrix) {
         var line = matrix_1[_i];
         for (var _a = 0, line_1 = line; _a < line_1.length; _a++) {
             var char = line_1[_a];
-            process.stdout.write(char);
+            process.stdout.write(char.toString());
         }
         console.log();
     }
 }
+function generateMatrix(content) {
+    var matrix = [];
+    for (var _i = 0, _a = content.split("\n"); _i < _a.length; _i++) {
+        var line = _a[_i];
+        var row = [];
+        for (var _b = 0, line_2 = line; _b < line_2.length; _b++) {
+            var char = line_2[_b];
+            row.push(parseInt(char));
+        }
+        matrix.push(row);
+    }
+    return matrix;
+}
+function findMinCostPath(matrix) {
+    var min = 10, straightMoves = 0, coord = [1, 1];
+    var width = matrix[0].length, height = matrix.length;
+    dfs();
+    return min;
+}
+function dfs() {
+}
 (function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var path, content, matrix, _i, _a, line, row, _b, line_2, char;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var path, content, matrix;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     path = "./day17_input.txt";
                     return [4 /*yield*/, readFile(path)];
                 case 1:
-                    content = _c.sent();
-                    matrix = [];
-                    for (_i = 0, _a = content.split("\n"); _i < _a.length; _i++) {
-                        line = _a[_i];
-                        row = [];
-                        for (_b = 0, line_2 = line; _b < line_2.length; _b++) {
-                            char = line_2[_b];
-                            row.push(char);
-                        }
-                        matrix.push(row);
-                    }
+                    content = _a.sent();
+                    matrix = generateMatrix(content);
                     printMatrix(matrix);
+                    console.log(findMinCostPath(matrix));
                     return [2 /*return*/];
             }
         });
