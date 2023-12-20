@@ -81,7 +81,7 @@ func generateInput(line: String) -> Input {
 
         if numbers.count >= 4 {
             let nrs = numbers.prefix(4).compactMap { Int($0) }
-            return Input(x: nrs[0], m: nrs[0], a: nrs[0], s: nrs[0])
+            return Input(x: nrs[0], m: nrs[1], a: nrs[2], s: nrs[3])
         }
 
     } catch {
@@ -94,9 +94,9 @@ func generateInput(line: String) -> Input {
 
 func generateFlow(line: String) -> Workflow {
     let parts = line.dropLast().split(separator: "{")
-    var id = parts[0]
-    var rawConditions = parts[1].split(separator: ",")
-    var outcome = rawConditions[rawConditions.count-1]
+    let id = parts[0]
+    let rawConditions = parts[1].split(separator: ",")
+    let outcome = rawConditions[rawConditions.count-1]
 
     var conditions: [Condition] = []
 
@@ -126,7 +126,7 @@ func populateData(path: String, conditionsMap: inout [String : Workflow]) -> [In
             }
             
             if isWorkflow != nil && isWorkflow! { // WorkFlow
-                var newflow = generateFlow(line: line)
+                let newflow = generateFlow(line: line)
                 conditionsMap[newflow.name] = newflow
                 continue
             }
@@ -144,10 +144,57 @@ func populateData(path: String, conditionsMap: inout [String : Workflow]) -> [In
     return inputs
 }
 
+func checkCondition(condition: Condition, input: Input) -> Bool {
+    var chosenInput: Int
+
+    switch condition.id {
+        case "x": chosenInput = input.x
+        case "m": chosenInput = input.m
+        case "a": chosenInput = input.a
+        case "s": chosenInput = input.s
+        default: 
+            chosenInput = input.x
+    }
+
+    return (condition.isLess && chosenInput < condition.threshold) 
+        || (!condition.isLess && chosenInput > condition.threshold)
+}
+
 let path = "./day19_input.txt"
 
 var conditionsMap = [String: Workflow]() 
 var inputs = populateData(path: path, conditionsMap: &conditionsMap)
 
-print(conditionsMap.count)
-print(inputs.count)
+
+var total = 0
+for input in inputs {
+
+    var id = "in"
+    while true {
+
+        var outcome = ""
+        let condition = conditionsMap[id]
+        let conditions = condition!.conditions
+
+        for i in 0...conditions.count-1 {
+            let condition = conditions[i]
+            if checkCondition(condition: condition, input: input) {
+                outcome = condition.next
+                break
+            }
+        }
+
+        if outcome == "" {
+            outcome = condition!.outcome
+        }
+
+        if outcome == "R" || outcome == "A" {
+            total += outcome == "A" ? input.x + input.m + input.a + input.s : 0
+            break
+        }
+
+        id = outcome
+    }
+}
+
+print(total)
