@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
+var pathFinder_1 = require("./pathFinder");
 function readFile(path) {
     return new Promise(function (resolve, reject) {
         fs.readFile(path, 'utf-8', function (err, res) {
@@ -71,14 +72,6 @@ function generateMatrix(content) {
     }
     return matrix;
 }
-function findMinCostPath(matrix) {
-    var min = 10, straightMoves = 0, coord = [1, 1];
-    var width = matrix[0].length, height = matrix.length;
-    dfs();
-    return min;
-}
-function dfs() {
-}
 (function main() {
     return __awaiter(this, void 0, void 0, function () {
         var path, content, matrix;
@@ -91,7 +84,7 @@ function dfs() {
                     content = _a.sent();
                     matrix = generateMatrix(content);
                     printMatrix(matrix);
-                    console.log(findMinCostPath(matrix));
+                    console.log(pathFinder_1.PathFinder.aStar(matrix));
                     return [2 /*return*/];
             }
         });

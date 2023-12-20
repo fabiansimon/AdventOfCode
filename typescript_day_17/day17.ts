@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { PathFinder } from './pathFinder';
 
 function readFile(path: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -22,9 +23,9 @@ function printMatrix(matrix: number[][]) {
 }
 
 function generateMatrix(content: string) {
-    const matrix = [];
+    const matrix: number[][] = [];
     for (const line of content.split("\n")) {
-        let row = [];
+        let row: number[] = [];
         for (const char of line) {
             row.push(parseInt(char));
         }
@@ -33,25 +34,13 @@ function generateMatrix(content: string) {
     return matrix;
 }
 
-function findMinCostPath(matrix: number[][]) {
-    var min = 10, straightMoves = 0, curr = 0, coord = [0, 0];
-    const width = matrix[0].length, height = matrix.length;
-
-    dfs(coord, width, height, straightMoves, min, curr);
-    return min;
-}
-
-function dfs(coordinates: Number[], width: Number, height: Number,
-            straightMoves: Number, min: Number, curr: Number) {
-    if (curr > min) return min;
-            
-        
-}
 
 (async function main() {
     const path = "./day17_input.txt";
     const content = await readFile(path);
     const matrix = generateMatrix(content);
+
     printMatrix(matrix);
-    console.log(findMinCostPath(matrix))
+    
+    console.log(PathFinder.aStar(matrix));
 })()
