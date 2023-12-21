@@ -15,6 +15,12 @@ var MinHeap = /** @class */ (function () {
     MinHeap.prototype.isEmpty = function () {
         return this.nodes.length === 0;
     };
+    MinHeap.prototype.contains = function (coordinates) {
+        return this.nodes.some(function (node) { return node.x === coordinates.x && node.y === coordinates.y; });
+    };
+    MinHeap.prototype.clear = function () {
+        this.nodes = [];
+    };
     return MinHeap;
 }());
 exports.MinHeap = MinHeap;

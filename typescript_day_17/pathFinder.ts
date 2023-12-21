@@ -1,20 +1,22 @@
 import { MinHeap } from "./minHeap";
 import { NNode } from "./node";
 
-interface Coordinate {
+export interface Coordinate {
     x: number
     y: number
 }
 
 export class PathFinder {
     static rows: number;
-    static cols: number; 
+    static cols: number;
+    static matrix: number[][];
 
     constructor() {}
     
     static aStar(matrix: number[][]) {
         this.rows = matrix.length;
         this.cols = matrix[0].length;
+        this.matrix = matrix;
 
         const start = { x: 0, y: 0 };
         const target = { x: this.cols - 1, y: this.rows - 1 };
@@ -30,24 +32,41 @@ export class PathFinder {
 
             // if target is reached
             if (this.isFinished(curr, target)) { 
-                return this.reconstructPath(curr);
+                const total = this.reconstructPath(curr, visited);
+
+                if (total !== -1) {
+                    return total;
+                } else {
+                    openSet.clear();
+                    openSet.add(new NNode(start.x, start.y, null, 0, this.heuristicCost(start, target)));
+                    continue;
+                }
             }
 
             const key = this.getKey({x: curr.x, y: curr.y});
             visited.add(key);
 
             const neighbours = this.getNeighbours(curr, visited);   
-            
-            for (const neighbour of neighbours) {
+
+            for (var i = 0; i < neighbours.length; i++) {
+                const neighbour = neighbours[i];
                 const nKey = this.getKey({ x: neighbour.x, y: neighbour.y });
-                if (visited.has(nKey)) continue;
+                if (visited.has(nKey)) {
+                    continue;
+                }
 
                 const nCost = curr.cost + matrix[neighbour.y][neighbour.x];
-                const heuristic = this.heuristicCost()
+                const heuristic = this.heuristicCost(neighbour, target);
+                const newNode = new NNode(neighbour.x, neighbour.y, curr, nCost, heuristic)
+
+                if (!openSet.contains({ x: neighbour.x, y: neighbour.y }) ||
+                    newNode.getCost() < this.getNode(openSet, neighbour.x, neighbour.y)?.getCost()!) {
+                    openSet.add(newNode);
+                }
             }
         }
 
-        return 10;  
+        return -1;  
     }
 
     static isFinished(node: NNode, target: Coordinate) {
@@ -90,13 +109,55 @@ export class PathFinder {
     static getNode(queue: MinHeap, x: number, y: number) {
         return queue.nodes.find(node => node.x === x && node.y === y);
     }
+    
+    static getLastMove(node: NNode, lastPosition: Coordinate) {
+        if (node.x < lastPosition.x) return "L";
+        if (node.x > lastPosition.x) return "R";
+        if (node.y < lastPosition.y) return "U";
+        return "D";
+    }
 
-    static reconstructPath(node: NNode | null) {
+    static reconstructPath(node: NNode | null, visited: Set<string>) {
+        var total: number = 0;
+        const route = new Array(this.rows - 1).fill(".").map(() => new Array(this.cols).fill("."));
+        
+        var lastPosition: Coordinate = {x: node?.x!, y: node?.y!};
+        var currDirection = "";
+        var lastMoveCounter = 0;
+
+        visited.clear();
+
         const path: Coordinate[] = [];
         while (node !== null) {
-            path.unshift({ x: node.x, y: node.y });
+            visited.add(this.getKey(node));
+
+            if (this.getLastMove(node, lastPosition) != currDirection) {
+                lastMoveCounter = 1;
+                currDirection = this.getLastMove(node, lastPosition);
+            } else {
+                lastMoveCounter += 1;
+                if (lastMoveCounter > 3) {
+                    return -1;
+                }
+            }
+    
+            if (this.matrix[node.x][node.y] !== undefined) {
+                total += this.matrix[node.x][node.y];
+                route[node.x][node.y] = "#";
+                
+            }
+
+            lastPosition = { x: node.x, y: node.y };
             node = node.parent;
         }
-        return path;
+
+        // for (const line of route) {
+        //     for (const char of line) {
+        //         process.stdout.write(char.toString());
+        //     }
+        //     console.log();
+        // }
+
+        return total;
     }
 }

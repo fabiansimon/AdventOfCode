@@ -1,4 +1,5 @@
 import { NNode } from "./node";
+import { Coordinate } from "./pathFinder";
 
 export class MinHeap {
     nodes: NNode[]
@@ -17,5 +18,13 @@ export class MinHeap {
 
     isEmpty() {
         return this.nodes.length === 0;
+    }
+
+    contains(coordinates: Coordinate) {
+        return this.nodes.some(node => node.x === coordinates.x && node.y === coordinates.y);
+    }
+
+    clear() {
+        this.nodes = [];
     }
 }
